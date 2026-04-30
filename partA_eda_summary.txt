@@ -1,4 +1,4 @@
-# Part A EDA Summary
+# EDA Summary
 
 ## Dataset source link
 - https://www.kaggle.com/datasets/uciml/red-wine-quality-cortez-et-al-2009
@@ -26,8 +26,8 @@
 - good_quality = 1: 184
 
 ## Short written findings from EDA
-- The `good_quality` target is imbalanced, so later models should not rely only on accuracy.
-- `alcohol` appears positively related to better quality.
-- `volatile_acidity` appears negatively related to better quality.
+- The good_quality target is imbalanced, so later models should not rely only on accuracy.
+- Alcohol appears positively related to better quality.
+- Volatile acidity appears negatively related to better quality.
 - Feature scales differ noticeably, so scaling will likely be useful in later modeling.
 - Later supervised models should report precision, recall, F1-score, and ROC-AUC in addition to accuracy.
