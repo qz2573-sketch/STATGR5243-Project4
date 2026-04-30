@@ -178,7 +178,7 @@ def save_processed(X_train_scaled, X_test_scaled,
     print(f"data/train_processed.csv  {train_df.shape}")
     print(f"data/test_processed.csv   {test_df.shape}")
 
-if __name__=="__main__":
+def main(df):
     df, X, y, feature_cols = data_preview(df)
 
     print("Split data")
@@ -198,3 +198,6 @@ if __name__=="__main__":
     save_processed(X_train_scaled, X_test_scaled,
                    y_train, y_test,
                    sample_weights, feature_cols)
+
+if __name__=="__main__":
+    main(df)

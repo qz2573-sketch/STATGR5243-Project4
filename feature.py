@@ -365,8 +365,7 @@ def engineer_features(df, cluster_labels, X_pca2):
 
     return df_feat
 
-
-if __name__ == "__main__":
+def main(df):
     df, X, y, feature_cols = data_preview(df)
 
     scaler = StandardScaler()
@@ -400,3 +399,6 @@ if __name__ == "__main__":
 
     df_feat.to_csv('data/wine_featured.csv', index=False)
     print(f"Saved: data/wine_featured.csv")
+
+if __name__ == "__main__":
+    main(df)
