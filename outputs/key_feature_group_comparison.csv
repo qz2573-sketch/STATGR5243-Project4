@@ -1,0 +1,7 @@
+feature,mean_not_good_quality,mean_good_quality,median_not_good_quality,median_good_quality,difference_in_mean_good_minus_not_good
+alcohol,10.2569,11.5528,10.0,11.6,1.296
+volatile_acidity,0.5488,0.4059,0.54,0.37,-0.143
+sulphates,0.6451,0.7456,0.6,0.74,0.1005
+citric_acid,0.2566,0.3729,0.24,0.4,0.1163
+density,0.9968,0.996,0.9968,0.9957,-0.0009
+chlorides,0.09,0.076,0.08,0.0715,-0.014

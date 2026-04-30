@@ -1,0 +1,2 @@
+number_of_rows_before_cleaning,number_of_rows_after_removing_duplicates,number_of_duplicate_rows_removed,number_of_numeric_physicochemical_features,total_missing_values,original_quality_score_range,percentage_good_quality_1,percentage_good_quality_0
+1599,1359,240,11,0,3 to 8,13.54,86.46

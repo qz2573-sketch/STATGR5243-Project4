@@ -1,0 +1,12 @@
+feature,Q1,Q3,IQR,lower_bound,upper_bound,number_of_outliers,percentage_of_outliers
+fixed_acidity,7.1,9.2,2.1,3.95,12.35,41,3.02
+volatile_acidity,0.39,0.64,0.25,0.015,1.015,19,1.4
+citric_acid,0.09,0.43,0.34,-0.42,0.94,1,0.07
+residual_sugar,1.9,2.6,0.7,0.85,3.65,126,9.27
+chlorides,0.07,0.091,0.021,0.0385,0.1225,87,6.4
+free_sulfur_dioxide,7.0,21.0,14.0,-14.0,42.0,26,1.91
+total_sulfur_dioxide,22.0,63.0,41.0,-39.5,124.5,45,3.31
+density,0.9956,0.9978,0.0022,0.9923,1.0012,35,2.58
+ph,3.21,3.4,0.19,2.925,3.685,28,2.06
+sulphates,0.55,0.73,0.18,0.28,1.0,55,4.05
+alcohol,9.5,11.1,1.6,7.1,13.5,12,0.88

@@ -1,0 +1,33 @@
+# Part A EDA Summary
+
+## Dataset source link
+- https://www.kaggle.com/datasets/uciml/red-wine-quality-cortez-et-al-2009
+
+## Dataset shape
+- Before cleaning: (1599, 12)
+- After duplicate removal: (1359, 13)
+
+## Missing value summary
+- Total missing values in cleaned dataset: 0
+
+## Duplicate count
+- Duplicate rows before cleaning: 240
+
+## Original quality distribution
+- Quality 3: 10
+- Quality 4: 53
+- Quality 5: 577
+- Quality 6: 535
+- Quality 7: 167
+- Quality 8: 17
+
+## Binary target distribution
+- good_quality = 0: 1175
+- good_quality = 1: 184
+
+## Short written findings from EDA
+- The `good_quality` target is imbalanced, so later models should not rely only on accuracy.
+- `alcohol` appears positively related to better quality.
+- `volatile_acidity` appears negatively related to better quality.
+- Feature scales differ noticeably, so scaling will likely be useful in later modeling.
+- Later supervised models should report precision, recall, F1-score, and ROC-AUC in addition to accuracy.
