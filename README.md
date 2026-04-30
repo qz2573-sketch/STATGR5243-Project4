@@ -1,4 +1,23 @@
 # GU5243 Project04
 ### Collaborators：
 ## Project Introduction
-(project intro ....)
+This project studies the Red Wine Quality dataset and builds an end-to-end machine learning workflow for data preparation, exploratory analysis, feature work, and predictive modeling. The repository currently includes a reproducible data-cleaning and exploratory analysis pipeline, together with saved figures, summary tables, and a cleaned dataset for downstream team tasks.
+
+The dataset comes from the Kaggle/UCI Red Wine Quality source:
+https://www.kaggle.com/datasets/uciml/red-wine-quality-cortez-et-al-2009
+
+Main generated outputs in this repository include:
+- `data/cleaned_red_wine.csv`
+- `figures/quality_distribution.png`
+- `figures/binary_target_distribution.png`
+- `figures/correlation_heatmap.png`
+- `figures/combined_boxplots.png`
+- `figures/combined_distributions.png`
+- `figures/alcohol_vs_volatile_acidity.png`
+- `outputs/partA_summary_table.csv`
+- `outputs/quality_distribution_table.csv`
+- `outputs/binary_target_distribution_table.csv`
+- `outputs/key_feature_group_comparison.csv`
+- `outputs/outlier_summary.csv`
+
+Initial exploratory findings suggest that the dataset has no missing values, duplicate rows were identified and removed, and wine quality scores are concentrated around 5 and 6. The binary quality label is imbalanced, alcohol shows a positive relationship with better quality, and volatile acidity shows a negative relationship. Several variables are skewed and measured on different scales, indicating that later modeling steps should consider scaling and evaluation metrics beyond accuracy.
