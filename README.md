@@ -1,51 +1,125 @@
-# GU5243 Project04
-### Collaborators：
-## Project Introduction
-This project studies the Red Wine Quality dataset and builds an end-to-end machine learning workflow for data preparation, exploratory analysis, feature work, and predictive modeling. The repository currently includes a reproducible preprocessing pipeline, a separate exploratory data analysis script, saved figures, summary tables, and a cleaned dataset for downstream team tasks.
+# GU5243 Project 04 — Red Wine Quality Prediction
 
-The dataset comes from the Kaggle/UCI Red Wine Quality source:
-https://www.kaggle.com/datasets/uciml/red-wine-quality-cortez-et-al-2009
+End-to-end machine learning study of the UCI/Kaggle Red Wine Quality dataset.
+The pipeline covers data cleaning, EDA, unsupervised exploration (PCA and
+K-Means), feature engineering, supervised modeling (Logistic Regression,
+Random Forest, XGBoost), and model interpretation (gain importance,
+permutation importance, SHAP).
 
-Main generated outputs in this repository include:
-- `data_preparation.py`
-- `eda.py`
-- `feature.py`
-- `preprocessing.py`
-- `data/cleaned_red_wine.csv`
-- `data/wine_featured.csv`
-- `data/train_processed.csv`
-- `data/test_processed.csv`
-- `figures/quality_distribution.png`
-- `figures/binary_target_distribution.png`
-- `figures/correlation_heatmap.png`
-- `figures/combined_boxplots.png`
-- `figures/combined_distributions.png`
-- `figures/alcohol_vs_volatile_acidity.png`
-- `figures/pca_variance.png`
-- `figures/pca_2d.png`
-- `figures/elbow_method.png`
-- `figures/silhouette_scores.png`
-- `figures/cluster_plot.png`
-- `figures/cluster_summary_table.png`
-- `figures/class_distribution.png`
-- `outputs/partA_summary_table.csv`
-- `outputs/quality_distribution_table.csv`
-- `outputs/binary_target_distribution_table.csv`
-- `outputs/key_feature_group_comparison.csv`
-- `outputs/outlier_summary.csv`
+Dataset source:
+<https://www.kaggle.com/datasets/uciml/red-wine-quality-cortez-et-al-2009>
 
-Workflow overview:
-- `data_preparation.py` handles dataset loading, column standardization, duplicate removal, binary target construction, and cleaned data export.
-- `eda.py` generates the required visualizations and summary tables from the cleaned dataset.
-- `features.py` applies PCA and K-Means clustering for unsupervised exploration, engineers six new features from EDA findings and unsupervised outputs, and exports the enriched dataset as `wine_featured.csv`.
-- `preprocessing.py` performs stratified train/test splitting, StandardScaler normalization, and sample weighting to address class imbalance, and exports the processed train and test sets ready for modeling.
+## Team 3
 
-To reproduce the current results, run:
-- `python data_preparation.py`
-- `python eda.py`
-- `python features.py`
-- `python preprocessing.py`
-  
-Initial exploratory findings suggest that the dataset has no missing values, duplicate rows were identified and removed, and wine quality scores are concentrated around 5 and 6. The binary quality label is imbalanced, alcohol shows a positive relationship with better quality, and volatile acidity shows a negative relationship. Sulphates and citric acid also show positive relationships with quality. Several variables are skewed and measured on different scales, indicating that later modeling steps should consider scaling and evaluation metrics beyond accuracy.
+| Member | UNI |
+|--------|-----|
+| Haowen Cui | hc3617 |
+| Gujie Li | gl2957 |
+| Maya Rubin | mr4459 |
+| Qixian Zhou | qz2573 |
 
-PCA revealed that six components are needed to explain 80% of the total variance, and that Good Quality and Not Good Quality wines overlap substantially in the reduced feature space, supporting the use of nonlinear models. K-Means clustering with K = 2 identified two groups that differ nearly threefold in good_quality rate, validating that the physicochemical features contain quality-relevant structure. Six engineered features were added based on EDA patterns and unsupervised outputs, with alcohol_acidity_ratio showing the strongest correlation with good_quality (r = 0.37). The final processed dataset contains 17 features across 1,087 training and 272 test observations, with sample weights applied to handle the 86.5% / 13.5% class imbalance.
+## Headline Result
+
+The final model is a **tuned XGBoost classifier** (max_depth = 4,
+n_estimators = 200, learning_rate = 0.05, scale_pos_weight = 6) predicting the
+binary `good_quality` target (`quality >= 7`).
+
+| Model | Accuracy | Precision | Recall | F1 | ROC-AUC | PR-AUC |
+|-------|----------|-----------|--------|----|---------|--------|
+| Logistic Regression | 0.772 | 0.360 | 0.865 | 0.508 | 0.893 | 0.579 |
+| Random Forest | 0.846 | 0.449 | 0.595 | 0.512 | 0.886 | 0.519 |
+| **XGBoost (tuned)** | **0.860** | **0.489** | 0.622 | **0.548** | **0.894** | **0.630** |
+
+Across XGBoost gain importance, Random Forest impurity, Logistic Regression
+standardized coefficients, permutation importance, and SHAP, the same drivers
+emerge: **alcohol**, **sulphates**, and the engineered **alcohol_acidity_ratio**
+are consistently the strongest predictors of "Good Quality" wine.
+
+## Repository Structure
+
+```
+.
+├── data_preparation.py            # Section 1 — load, dedupe, binary target
+├── eda.py                         # Section 2 — EDA visuals & summary tables
+├── feature.py                     # Sections 4–5 — PCA, K-Means, engineered features
+├── preprocessing.py               # Section 5 — split, scale, sample weights
+├── modeling and model comparison.py  # Section 6 — LR / RF / XGBoost + tuning
+├── model_interpretation.py        # Sections 7–8 — gain, permutation, SHAP, ROC/PR
+├── data/
+│   ├── winequality-red.csv        # raw dataset
+│   ├── cleaned_red_wine.csv
+│   ├── wine_featured.csv
+│   ├── train_processed.csv
+│   └── test_processed.csv
+├── figures/                       # all plots referenced in the report and slides
+└── outputs/                       # summary tables (CSV) for the report
+```
+
+## Reproducing the Results
+
+```bash
+# 1. Section 1
+python data_preparation.py
+
+# 2. Section 2
+python eda.py
+
+# 3. Sections 4–5 (unsupervised + feature engineering)
+python feature.py
+
+# 4. Section 5 (preprocessing)
+python preprocessing.py
+
+# 5. Section 6 (supervised modeling)
+python "modeling and model comparison.py"
+
+# 6. Sections 7–8 (interpretation + final figures)
+python model_interpretation.py
+```
+
+### Dependencies
+
+```
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+xgboost
+shap
+```
+
+On macOS, XGBoost requires the OpenMP runtime: `brew install libomp`.
+
+## Workflow Overview
+
+1. **Data Acquisition & Cleaning (`data_preparation.py`).** Loads 1,599 rows,
+   removes 240 duplicates, standardizes column names, constructs the binary
+   `good_quality` label (`quality >= 7`) — final cleaned shape 1,359 × 12.
+2. **EDA (`eda.py`).** Distributions, correlation heatmap, group comparisons,
+   IQR outlier review, scatter of alcohol vs volatile acidity by quality.
+3. **Unsupervised + Feature Engineering (`feature.py`).** PCA (6 components for
+   80% variance), K-Means with K = 2 (silhouette = 0.205), six engineered
+   features including `alcohol_acidity_ratio` (r = 0.37 with target),
+   `free_to_total_SO2`, `total_acidity`, the K-Means cluster label, `PC1_score`
+   and `PC2_score`.
+4. **Preprocessing (`preprocessing.py`).** Stratified 80/20 split (1,087 / 272),
+   `StandardScaler` fit on train only, balanced sample weights to address the
+   86.5% / 13.5% class imbalance.
+5. **Supervised Modeling (`modeling and model comparison.py`).** Trains
+   Logistic Regression, Random Forest, and XGBoost; 5-fold CV; grid search on
+   XGBoost (best: max_depth = 4, n_estimators = 200).
+6. **Model Interpretation (`model_interpretation.py`).** Refits all three
+   models, computes XGBoost gain importance, Random Forest impurity, Logistic
+   Regression standardized coefficients, permutation importance on the test
+   set, and SHAP TreeExplainer values for the final XGBoost. Outputs ROC and
+   PR overlay curves and the consolidated metrics table.
+
+## Member Contributions
+
+| Member | Contribution |
+|--------|--------------|
+| Qixian Zhou (qz2573) | Sections 1–2: data acquisition, cleaning, and exploratory data analysis (`data_preparation.py`, `eda.py`). |
+| Haowen Cui (hc3617) | Sections 4–5: PCA, K-Means, six engineered features (`feature.py`), and the preprocessing pipeline — stratified split, scaling, sample weighting (`preprocessing.py`). |
+| Gujie Li (gl2957) | Section 6: supervised modeling (`modeling and model comparison.py`) — Logistic Regression, Random Forest, XGBoost, cross-validation, hyperparameter tuning. |
+| Maya Rubin (mr4459) | Sections 7–9: model interpretation (`model_interpretation.py` — gain, impurity, coefficients, permutation, SHAP, ROC and PR overlays), final model selection writeup, limitations and conclusion, slide deck, and this README. |
