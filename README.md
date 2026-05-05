@@ -91,6 +91,82 @@ shap
 
 On macOS, XGBoost requires the OpenMP runtime: `brew install libomp`.
 
+## Shiny App
+
+This repository now includes a Shiny web app for interactive red wine quality
+prediction.
+
+### Live app
+
+- Deployed app: <https://statgr5243project.shinyapps.io/red-wine-quality-predictor/>
+
+### App files
+
+- `app.R` — Shiny user interface and server logic
+- `build_artifacts.py` — exports deployable model artifacts from the Python pipeline
+- `wine_quality_service.py` — Python-side training and artifact generation helpers
+- `deploy_shinyapps.R` — helper script for publishing the app to `shinyapps.io`
+
+### What the app does
+
+- accepts the 11 raw wine chemistry inputs from the user
+- recreates the engineered features used by the project pipeline
+- predicts whether the wine is "Good" or "Bad" using the tuned XGBoost model
+- shows prediction probabilities, model metrics, and input-field reference data
+
+### Artifact export workflow
+
+The original modeling workflow remains in Python. To refresh the web app model,
+first export the serving artifacts:
+
+```bash
+python build_artifacts.py
+```
+
+This writes:
+
+- `artifacts/serving_bundle.json` — scaler, PCA, K-Means, schema, metrics, metadata
+- `artifacts/xgb_model.json` — exported XGBoost model used by `app.R`
+
+### Local run instructions
+
+1. Make sure the Python dependencies used by the modeling pipeline are installed.
+2. Generate fresh Shiny serving artifacts:
+
+   ```bash
+   python build_artifacts.py
+   ```
+
+3. Install the R packages used by the app:
+
+   ```r
+   install.packages(c("shiny", "jsonlite", "xgboost"))
+   ```
+
+4. Start the app from the repository root:
+
+   ```r
+   shiny::runApp()
+   ```
+
+### shinyapps.io deployment
+
+The deployed app serves predictions directly in R using the exported XGBoost
+model and JSON metadata, which avoids Python environment issues on
+`shinyapps.io`.
+
+To deploy, set these environment variables in your R session or shell:
+
+```r
+Sys.setenv(
+  SHINYAPPS_NAME = "your-account-name",
+  SHINYAPPS_TOKEN = "your-token",
+  SHINYAPPS_SECRET = "your-secret",
+  SHINYAPP_APPNAME = "red-wine-quality-predictor"
+)
+source("deploy_shinyapps.R")
+```
+
 ## Workflow Overview
 
 1. **Data Acquisition & Cleaning (`data_preparation.py`).** Loads 1,599 rows,
